@@ -1,5 +1,24 @@
 # Stellar MarketPay — Smart Contract Formal Verification
 
+## Contract development prerequisites
+
+Install the same toolchain used by local development and CI before building
+or verifying contracts:
+
+| Tool | Purpose | Installation |
+| --- | --- | --- |
+| Rust stable | Contract builds | Install with [rustup](https://rustup.rs), then `rustup target add wasm32v1-none` |
+| Rust nightly | Fuzz targets | `rustup toolchain install nightly` |
+| cargo-fuzz | Fuzzing | `cargo +nightly install cargo-fuzz --locked` |
+| wasm-opt | Optimized WASM | `brew install binaryen` or `apt install binaryen` |
+| Soroban CLI | Deploying and invoking contracts | Follow the [Stellar CLI install guide](https://developers.stellar.org/docs/tools/developer-tools) |
+| Certora CLI | Formal verification | `python3 -m pip install certora-cli` |
+
+The required WASM target and `wasm-opt` are checked by the contract Makefile.
+Fuzzing uses nightly and `cargo-fuzz`; formal verification additionally
+requires a `CERTORAKEY` environment variable. `scripts/setup-dev.sh` checks
+the Rust toolchain but does not install Soroban CLI or Certora credentials.
+
 Formal verification mathematically proves that a smart contract adheres to a set of high-level properties (invariants) for **all possible inputs and execution paths**. Unlike unit tests or integration tests, which verify individual test cases, formal verification provides complete assurance within the bounds of the specifications.
 
 We use the **Certora Prover** with **Certora Verification Language (CVL)** to formally verify our Soroban smart contract.
